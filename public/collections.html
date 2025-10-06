@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="collectionsTitle">Коллекции</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div id="three-bg"></div>
+    <header>
+      <div class="top-header">
+        <div class="logo">
+          <a href="index.html">
+            <img src="assets/img/Logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="about.html" data-i18n="navAbout">О нас</a>
+          <a href="collections.html" data-i18n="navCollections">Коллекции</a>
+        </nav>
+        <div class="social-buttons">
+          <a href="https://twitter.com" target="_blank">
+            <img src="assets/img/twitter-logo.png" alt="Twitter" /> Twitter
+          </a>
+          <a href="https://t.me" target="_blank">
+            <img src="assets/img/telegram-logo.png" alt="Telegram" /> Telegram
+          </a>
+          <a href="https://pump.fun" target="_blank">
+            <img src="assets/img/pump-logo.png" alt="Pump.fun" /> Pump.fun
+          </a>
+        </div>
+        <!-- Переключатель языка -->
+        <div class="language-switcher">
+          <button id="languageBtn" class="btn">
+            <img src="assets/img/lang.png" alt="Language" class="language-icon" />
+            <span id="currentLang">RU</span>
+          </button>
+          <ul id="languageDropdown" class="dropdown">
+            <li data-lang="ru">RU</li>
+            <li data-lang="en">EN</li>
+          </ul>
+        </div>
+        <div class="auth">
+          <a href="login.html" class="btn" data-i18n="authLogin">
+            Войти / Зарегистрироваться
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Фильтры -->
+      <section class="filters">
+        <button class="filter-btn active" data-filter="all" data-i18n="filterAll">Все</button>
+        <button class="filter-btn" data-filter="new" data-i18n="filterNew">Новые</button>
+        <button class="filter-btn" data-filter="popular" data-i18n="filterPopular">Популярные</button>
+      </section>
+    
+      <!-- Контейнер для динамических коллекций -->
+      <section class="collections-grid" id="collectionsContainer"></section>
+    </main>
+
+    <!-- Скрипт загрузки коллекций с API -->
+    <script>
+      async function loadCollections() {
+        try {
+          const response = await fetch("/api/collections");
+          const data = await response.json();
+
+          if (!data.success) {
+            throw new Error("Ошибка загрузки коллекций");
+          }
+
+          console.log("✅ Коллекции загружены:", data);
+
+          const container = document.getElementById("collectionsContainer");
+
+          if (!container) {
+            console.error("❌ Ошибка: элемент #collectionsContainer не найден в DOM");
+            return;
+          }
+
+          container.innerHTML = "";
+
+          data.collections.forEach((collection) => {
+            const card = document.createElement("div");
+            card.classList.add("collection-card");
+
+            card.innerHTML = `
+              <div class="blurred-image-container">
+                <img src="${collection.preview || '/default-image.jpg'}" alt="${collection.title}" class="blurred-image">
+              </div>
+              <div class="collection-info">
+                <h3>${collection.title}</h3>
+                <p>${collection.description}</p>
+                <p>Цена: ${collection.price} SOL</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn buy-btn" data-id="${collection.id}" data-price="${collection.price}">Купить</button>
+              </div>
+            `;
+
+            container.appendChild(card);
+          });
+        } catch (error) {
+          console.error("❌ Ошибка загрузки коллекций:", error);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", loadCollections);
+    </script>
+
+    <!-- Подключение three.js и эффектов -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threeEffects.js"></script>
+    <script>
+      createRibbon();
+      createParticleField();
+    </script>
+
+    <!-- Основной скрипт -->
+    <script src="js/main.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1.75.0/lib/index.iife.js"></script>
+    
+
+  </body>
+</html>

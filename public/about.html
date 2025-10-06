@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="aboutTitle">О нас</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div id="three-bg"></div>
+    <header>
+      <div class="top-header">
+        <div class="logo">
+          <a href="index.html">
+            <img src="assets/img/Logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="about.html" data-i18n="navAbout">О нас</a>
+          <a href="collections.html" data-i18n="navCollections">Коллекции</a>
+        </nav>
+        <div class="social-buttons">
+          <a href="https://twitter.com" target="_blank">
+            <img src="assets/img/twitter-logo.png" alt="Twitter" /> Twitter
+          </a>
+          <a href="https://t.me" target="_blank">
+            <img src="assets/img/telegram-logo.png" alt="Telegram" /> Telegram
+          </a>
+          <a href="https://pump.fun" target="_blank">
+            <img src="assets/img/pump-logo.png" alt="Pump.fun" /> Pump.fun
+          </a>
+        </div>
+        <!-- Переключатель языка -->
+        <div class="language-switcher">
+          <button id="languageBtn" class="btn">
+            <img src="assets/img/lang.png" alt="Language" class="language-icon" />
+            <span id="currentLang">RU</span>
+          </button>
+          <ul id="languageDropdown" class="dropdown">
+            <li data-lang="ru">RU</li>
+            <li data-lang="en">EN</li>
+          </ul>
+        </div>
+        <div class="auth">
+          <a href="login.html" class="btn" data-i18n="authLogin">Войти / Зарегистрироваться</a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="content-container">
+      <section class="roadmap">
+        <img src="assets/img/Roadmapp.png" alt="Roadmap" class="roadmap-image" />
+      </section>
+      <section class="about">
+        <div class="decorative-header">
+          <h2 data-i18n="aboutHeader">О нашей платформе</h2>
+          <div class="header-line"></div>
+        <p data-i18n="aboutText1">
+          Наша платформа предлагает уникальный опыт покупки эротического контента с использованием криптовалюты Solana. 
+        </p>
+        <p data-i18n="aboutText2">
+          Мы предоставляем моделям новые возможности монетизации, а пользователям — удобный и быстрый доступ к контенту без посредников и ограничений.
+        </p>
+        <div class="features">
+          <div class="feature-item">
+            <img src="assets/img/Model.png" alt="Только лучшие модели" />
+            <h3 data-i18n="featureFastTitle">Только лучшие модели</h3>
+            <p data-i18n="featureFastDesc">Эксклюзивный контент от популярных и новых лиц, доступный напрямую.</p>
+          </div>
+          <div class="feature-item">
+            <img src="assets/img/Tr.png" alt="Быстрые и автоматизированные платежи" />
+            <h3 data-i18n="featureFeesTitle">Быстрые и автоматизированные платежи</h3>
+            <p data-i18n="featureFeesDesc">Нет задержек и сложных процессов – всё работает мгновенно.</p>
+          </div>
+          <div class="feature-item">
+            <img src="assets/img/BA.png" alt="Безопасность и анонимность" />
+            <h3 data-i18n="featureSecurityTitle">Безопасность и анонимность</h3>
+            <p data-i18n="featureSecurityDesc">Шифрование данных, защита транзакций и полная конфиденциальность пользователей.</p>
+          </div>
+        </div>
+        <h3 data-i18n="contactsTitle">Контакты</h3>
+        <p>Email: gajustephanie@proton.me</p>
+        <ul class="social-links">
+          <li><a href="https://x.com/Margo_on_SOL" target="_blank">Twitter</a></li>
+          <li><a href="https://t.me/MargoOnSolChat" target="_blank">Telegram</a></li>
+          <li><a href="https://pump.fun" target="_blank">Pump.fun</a></li>
+        </ul>
+        <div class="cta">
+          <a href="join.html" class="btn" data-i18n="joinBtn">Присоединиться к нам</a>
+        </div>
+      </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threeEffects.js"></script>
+    <script>
+      createRibbon();
+      createParticleField();
+    </script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

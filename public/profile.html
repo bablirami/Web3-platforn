@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мой профиль – Margo on SOL</title>
+    <!-- Подключение шрифтов -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Three.js примеры -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="js/main.js"></script>
+    <!-- Подключение основного CSS -->
+    <link rel="stylesheet" href="css/styles.css" />
+    
+    <!-- Общие стили для Three.js фона и header (можно оставить как в главной странице) -->
+    <style>
+      body {
+        margin: 0;
+        overflow-x: hidden;
+      }
+      #three-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+      header {
+        position: relative;
+        z-index: 10;
+      }
+      .hidden {
+        display: none;
+      }
+
+      /* Дополнительные стили для маленьких кнопок и т.д. */
+      .small-btn {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+      }
+      .mini-btn {
+        padding: 2px 5px;
+        font-size: 0.75rem;
+        margin-left: 5px;
+      }
+      .balance-controls {
+        display: flex;
+        gap: 10px;
+        margin-top: 5px;
+      }
+      .address-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Three.js сцена -->
+    <div id="three-bg"></div>
+    
+    <!-- Header (тот же, что на главной странице) -->
+    <header>
+      <div class="top-header">
+        <!-- Логотип -->
+        <div class="logo">
+          <a href="index.html">
+            <img src="assets/img/Logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <!-- Навигация -->
+        <nav class="nav-links">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="about.html" data-i18n="navAbout">О нас</a>
+          <a href="collections.html" data-i18n="navCollections">Коллекции</a>
+        </nav>
+        <!-- Социальные кнопки -->
+        <div class="social-buttons">
+          <a href="https://twitter.com" target="_blank">
+            <img src="assets/img/twitter-logo.png" alt="Twitter" /> Twitter
+          </a>
+          <a href="https://t.me" target="_blank">
+            <img src="assets/img/telegram-logo.png" alt="Telegram" /> Telegram
+          </a>
+          <a href="https://pump.fun" target="_blank">
+            <img src="assets/img/pump-logo.png" alt="Pump.fun" /> Pump.fun
+          </a>
+        </div>
+        <!-- Переключатель языка -->
+        <div class="language-switcher">
+          <button id="languageBtn" class="btn">
+            <img src="assets/img/lang.png" alt="Language" class="language-icon" />
+            <span id="currentLang">RU</span>
+          </button>
+          <ul id="languageDropdown" class="dropdown">
+            <li data-lang="ru">RU</li>
+            <li data-lang="en">EN</li>
+          </ul>
+        </div>
+        <!-- Кнопка авторизации -->
+        <div class="auth">
+          <a href="login.html" class="btn auth-btn">Войти / Зарегистрироваться</a>
+          <a href="profile.html" class="btn profile-btn">Мой профиль</a>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Основной контент страницы профиля -->
+    <main class="profile-page">
+      <!-- Карточка профиля -->
+      <div class="profile-card">
+        <div class="avatar-container">
+          <!-- Аватар пользователя -->
+          <img src="assets/img/avatar-placeholder.png" alt="Avatar" class="avatar" />
+          <!-- Кнопки изменения фото -->
+          <div>
+            <button id="changeAvatarBtn" class="btn small-btn">Изменить аватар</button>
+            <button id="changePhotoBtn" class="btn mini-btn">Изменить фото</button>
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" class="hidden" />
+        </div>
+        <h1 id="displayName" class="username">user</h1>
+        <!-- Уменьшенная кнопка изменения ника -->
+        <button id="changeNickBtn" class="btn small-btn">Изменить ник</button>
+        <input type="text" id="nicknameInput" class="hidden" placeholder="Введите ник" />
+        
+        <p>
+          Баланс: <span id="balance">0 SOL</span>
+          <span class="balance-controls">
+            <button id="refreshBalanceBtn" class="btn mini-btn">Обновить</button>
+          </span>
+        </p>
+        <div class="address-wrapper">
+          <p>Кошелек: <span id="walletAddress"></span></p>
+          <button id="copyAddressBtn" class="btn mini-btn">Скопировать адрес</button>
+        </div>
+
+        <div class="balance-section">
+          <!-- Кнопка подключения кошелька -->
+          <button id="connectWalletBtn" class="btn">Подключить Phantom Wallet</button>
+          <p id="walletError" style="color: red; margin-top: 5px;"></p>
+        </div>
+      </div>
+      
+      <!-- Карточка с коллекциями -->
+      <div class="collections-card">
+        <h2>Мои коллекции</h2>
+        <div class="collections-grid" id="userCollections">
+          <!-- Здесь будут подгружаться коллекции, которые приобрёл пользователь -->
+        </div>
+      </div>
+    </main>
+    
+    <!-- Three.js и эффекты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threeEffects.js"></script>
+    <script>
+      createRibbon();
+      createParticleField();
+
+      // Переменная состояния для подключения кошелька
+      let walletConnected = false;
+
+      // Функция подключения/отключения кошелька
+      document.getElementById("connectWalletBtn").addEventListener("click", function() {
+        if (!walletConnected) {
+          // Симуляция подключения кошелька
+          walletConnected = true;
+          this.textContent = "Отключить Phantom Wallet";
+          document.getElementById("walletAddress").textContent = "0x1234...abcd"; // Пример адреса
+        } else {
+          walletConnected = false;
+          this.textContent = "Подключить Phantom Wallet";
+          document.getElementById("walletAddress").textContent = "";
+        }
+      });
+
+      // Функция изменения аватара (или фото)
+      document.getElementById("changeAvatarBtn").addEventListener("click", function() {
+        document.getElementById("avatarInput").click();
+      });
+      // «Изменить фото» сделаем той же логикой, если нужны разные — разнести в разные поля
+      document.getElementById("changePhotoBtn").addEventListener("click", function() {
+        document.getElementById("avatarInput").click();
+      });
+
+      document.getElementById("avatarInput").addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if(file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            document.querySelector(".avatar").src = e.target.result;
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Функция изменения ника
+      document.getElementById("changeNickBtn").addEventListener("click", function() {
+        const nicknameInput = document.getElementById("nicknameInput");
+        if(nicknameInput.style.display === "none" || nicknameInput.style.display === "") {
+          nicknameInput.style.display = "block";
+          nicknameInput.value = document.getElementById("displayName").textContent;
+          this.textContent = "Сохранить ник";
+        } else {
+          document.getElementById("displayName").textContent = nicknameInput.value || "user";
+          nicknameInput.style.display = "none";
+          this.textContent = "Изменить ник";
+        }
+      });
+
+      // Функция копирования адреса кошелька
+      document.getElementById("copyAddressBtn").addEventListener("click", function() {
+        const address = document.getElementById("walletAddress").textContent;
+        if (!address) return;
+        navigator.clipboard.writeText(address).then(() => {
+          alert("Адрес скопирован: " + address);
+        });
+      });
+
+      // Функция «Обновить баланс»
+      document.getElementById("refreshBalanceBtn").addEventListener("click", function() {
+        // Здесь можно подставить реальную логику запроса к блокчейну или API
+        // Для примера просто обновим текст
+        document.getElementById("balance").textContent = "1.234 SOL";
+      });
+
+      // Пример функции загрузки коллекций пользователя
+      function loadUserCollections(token) {
+        // Здесь можно использовать fetch или axios, чтобы получить список NFT / коллекций пользователя
+        // fetch(`https://example.com/api/user-collections?token=${token}`)
+        //   .then(response => response.json())
+        //   .then(data => {
+        //       renderCollections(data);
+        //   })
+        //   .catch(err => console.error(err));
+
+        // Для примера просто создадим заглушку:
+        const exampleCollections = [
+          {
+            name: "Коллекция №1",
+            description: "Описание первой коллекции",
+            imageUrl: "assets/img/collection-default.jpg"
+          },
+          {
+            name: "Коллекция №2",
+            description: "Описание второй коллекции",
+            imageUrl: "assets/img/collection-default.jpg"
+          }
+        ];
+        renderCollections(exampleCollections);
+      }
+
+      // Функция отрисовки коллекций
+      function renderCollections(collections) {
+        const container = document.getElementById("userCollections");
+        container.innerHTML = ""; // очистим перед рендером
+        collections.forEach(col => {
+          const collectionCard = document.createElement("div");
+          collectionCard.className = "collection-card";
+          collectionCard.innerHTML = `
+            <div class="blurred-image-container">
+              <img src="${col.imageUrl}" alt="${col.name}" class="blurred-image" />
+            </div>
+            <div class="collection-info">
+              <h3>${col.name}</h3>
+              <p>${col.description || ""}</p>
+            </div>
+          `;
+          container.appendChild(collectionCard);
+        });
+      }
+
+      // При загрузке страницы можно проверить токен (если есть) и загрузить коллекции
+      window.addEventListener("DOMContentLoaded", () => {
+        // Пример: loadUserCollections("someUserToken");
+      });
+    </script>
+  </body>
+</html>

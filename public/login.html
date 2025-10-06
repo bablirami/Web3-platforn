@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="loginTitle">Вход / Регистрация</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body class="login-page">
+    <div class="auth">
+      <a href="login.html" class="btn auth-btn">Войти / Зарегистрироваться</a>
+      <a href="profile.html" class="btn profile-btn" style="display: none;">Мой профиль</a>
+    </div>    
+    <div class="modal-container">
+      <div class="modal">
+        <h2 data-i18n="loginHeader">Войти или Зарегистрироваться</h2>
+        <!-- Форма входа -->
+        <form id="authForm">
+          <label for="email" data-i18n="emailLabel">Email:</label>
+          <input type="email" id="email" placeholder="Введите ваш email" required />
+          <label for="password" data-i18n="passwordLabel">Пароль:</label>
+          <input type="password" id="password" placeholder="Введите ваш пароль" required />
+          <button type="submit" class="btn primary" data-i18n="loginButton">Войти</button>
+          <p id="loginError" style="color: red; margin-top: 5px;"></p>
+        </form>
+        <!-- Разделитель -->
+        <div class="divider">
+          <span data-i18n="or">или</span>
+        </div>
+        <!-- Кнопка переключения на регистрацию -->
+        <button id="toggleRegisterBtn" class="btn secondary" data-i18n="registerButton">Зарегистрироваться</button>
+        <!-- Форма регистрации (скрыта по умолчанию) -->
+        <form id="registerForm" style="display:none;">
+          <label for="regEmail" data-i18n="emailLabel">Email:</label>
+          <input type="email" id="regEmail" placeholder="Введите ваш email" required />
+          <label for="regPassword" data-i18n="passwordLabel">Пароль:</label>
+          <input type="password" id="regPassword" placeholder="Введите ваш пароль" required />
+          <button type="submit" class="btn primary" data-i18n="registerButton">Зарегистрироваться</button>
+          <p id="registerError" style="color: red; margin-top: 5px;"></p>
+        </form>
+        <!-- Кнопка входа через кошелек Solana с реальной интеграцией Phantom -->
+        <button id="solanaBtn" class="btn wallet" data-i18n="solanaButton">Войти через кошелек Solana</button>
+        <button id="forgotPassword" class="btn small" data-i18n="forgotPassword">Забыли пароль?</button>
+        <button id="backBtn" class="btn back" data-i18n="backButton">Назад</button>
+        <p id="solanaLoginError" style="color: red; margin-top: 5px;"></p>
+      </div>
+    </div>
+    <script src="js/main.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1.75.0/lib/index.iife.js"></script>
+    <script>
+      // Кнопка "Назад"
+      document.getElementById("backBtn").addEventListener("click", function () {
+        window.location.href = "index.html";
+      });
+
+      // Обработчик входа через Solana (Phantom)
+      const solanaBtn = document.getElementById("solanaBtn");
+      if (solanaBtn) {
+        solanaBtn.addEventListener("click", async () => {
+          if (window.solana && window.solana.isPhantom) {
+            try {
+              // Подключаем кошелек (если ещё не подключён)
+              const resp = await window.solana.connect();
+              const walletAddress = resp.publicKey.toString();
+
+              // Генерируем сообщение для подписи (с nonce)
+              const message = "Login to Margo on SOL. Nonce: " + Date.now();
+              const encodedMessage = new TextEncoder().encode(message);
+              // Запрашиваем подпись у кошелька
+              const signed = await window.solana.signMessage(encodedMessage, "utf8");
+              // Преобразуем подпись в base64
+              const signature = btoa(String.fromCharCode(...signed.signature));
+
+              // Отправляем данные на сервер для проверки
+              const response = await fetch("/api/wallet-login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ walletAddress, message, signature }),
+              });
+              const data = await response.json();
+              if (data.success) {
+                localStorage.setItem("userToken", data.token);
+                alert("Вход выполнен через кошелек!");
+                window.location.href = "index.html";
+              } else {
+                alert("Ошибка: " + data.message);
+              }
+            } catch (err) {
+              console.error(err);
+              alert("Ошибка подключения к кошельку: " + err.message);
+            }
+          } else {
+            alert("Phantom wallet не обнаружен. Установите Phantom и попробуйте снова.");
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

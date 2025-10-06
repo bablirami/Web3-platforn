@@ -1,0 +1,5 @@
+A full-featured Web3 content marketplace built with JavaScript, Node.js (Express), PostgreSQL, and Solana Web3.js.
+The platform enables creators to upload and sell exclusive digital collections using the Phantom wallet and Solana blockchain for fast, low-fee transactions.
+It features a multi-language interface (RU/EN), user authentication via JWT and Solana wallet login, a creator dashboard for managing and uploading media, and a secure transaction system that verifies payments directly on-chain.
+The front end uses vanilla JavaScript, HTML5/CSS3, and rich Three.js visuals (animated ribbons and particle effects) to deliver a polished, immersive user experience.
+The backend handles file uploads, access key generation, and transaction validation, while also exposing APIs for collection browsing and purchases.

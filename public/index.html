@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Подключение шрифтов -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Three.js примеры -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/solana-web3.js/1.75.0/solanaWeb3.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@1.75.0/lib/index.iife.js"></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Margo on SOL</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      body {
+        margin: 0;
+        overflow-x: hidden;
+      }
+      #three-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+      }
+      header {
+        position: relative;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Three.js сцена -->
+    <div id="three-bg"></div>
+    <header>
+      <div class="top-header">
+        <!-- Логотип -->
+        <div class="logo">
+          <a href="index.html">
+            <img src="assets/img/Logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <!-- Навигация -->
+        <nav class="nav-links">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="about.html" data-i18n="navAbout">О нас</a>
+          <a href="collections.html" data-i18n="navCollections">Коллекции</a>
+        </nav>
+        <!-- Социальные кнопки -->
+        <div class="social-buttons">
+          <a href="https://x.com/Margo_on_SOL" target="_blank">
+            <img src="assets/img/twitter-logo.png" alt="Twitter" /> Twitter
+          </a>
+          <a href="https://t.me/MargoOnSolChat" target="_blank">
+            <img src="assets/img/telegram-logo.png" alt="Telegram" /> Telegram
+          </a>
+          <a href="https://pump.fun" target="_blank">
+            <img src="assets/img/pump-logo.png" alt="Pump.fun" /> Pump.fun
+          </a>
+        </div>
+        <!-- Переключатель языка -->
+        <div class="language-switcher">
+          <button id="languageBtn" class="btn">
+            <img src="assets/img/lang.png" alt="Language" class="language-icon" />
+            <span id="currentLang">RU</span>
+          </button>
+          <ul id="languageDropdown" class="dropdown">
+            <li data-lang="ru">RU</li>
+            <li data-lang="en">EN</li>
+          </ul>
+        </div>
+        <!-- Кнопка авторизации -->
+        <div class="auth">
+          <a href="login.html" class="btn auth-btn">Войти / Зарегистрироваться</a>
+          <a href="profile.html" class="btn profile-btn" style="display: none;">Мой профиль</a>
+        </div>
+      </div>
+    </header>
+    <div class="layout">
+      <!-- Левый блок -->
+      <aside class="left-section">
+        <div class="block">
+          <p data-i18n="leftBlock1">Solana Margo – это инновационная платформа, использующая блокчейн Solana для покупки эксклюзивного контента. Мы обеспечиваем быстрые транзакции, минимальные комиссии и максимальное удобство для пользователей.</p>
+        </div>
+        <div class="block">
+          <p data-i18n="leftBlock2">Быстрые и надежные транзакции.</p>
+        </div>
+      </aside>
+      <!-- Центральный блок -->
+      <main class="hero">
+        <h1 data-i18n="heroTitle">Эксклюзивные коллекции, доступные вам первыми</h1>
+        <h2 data-i18n="heroSubtitle">Margo on SOL</h2>
+        <a href="collections.html" class="btn" data-i18n="heroBtn">Откройте коллекции</a>
+      </main>
+      <!-- Правый блок -->
+      <aside class="right-section">
+        <div class="block">
+          <p data-i18n="rightBlock1">Уникальные NFT от Solana Margo.</p>
+        </div>
+        <div class="block">
+          <p data-i18n="rightBlock2">Мгновенные транзакции.</p>
+        </div>
+      </aside>
+    </div>
+    <!-- Three.js и эффекты -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threeEffects.js"></script>
+    <script>
+      createRibbon();
+      createParticleField();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="collectionViewTitle">Просмотр коллекции</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="top-header">
+        <div class="logo">
+          <a href="index.html">
+            <img src="assets/img/Logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="about.html" data-i18n="navAbout">О нас</a>
+          <a href="collections.html" data-i18n="navCollections">Коллекции</a>
+        </nav>
+        <div class="social-buttons">
+          <a href="https://twitter.com" target="_blank">
+            <img src="assets/img/twitter-logo.png" alt="Twitter" /> Twitter
+          </a>
+          <a href="https://t.me" target="_blank">
+            <img src="assets/img/telegram-logo.png" alt="Telegram" /> Telegram
+          </a>
+          <a href="https://pump.fun" target="_blank">
+            <img src="assets/img/pump-logo.png" alt="Pump.fun" /> Pump.fun
+          </a>
+        </div>
+
+                <!-- Переключатель языка -->
+        <div class="language-switcher">
+          <button id="languageBtn" class="btn">
+            <img src="assets/img/lang.png" alt="Language" class="language-icon" />
+            <span id="currentLang">RU</span>
+          </button>
+          <ul id="languageDropdown" class="dropdown">
+            <li data-lang="ru">RU</li>
+            <li data-lang="en">EN</li>
+          </ul>
+        </div>
+        <div class="auth">
+          <a href="login.html" class="btn" data-i18n="authLogin"
+            >Войти / Зарегистрироваться</a
+          >
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="collection-view">
+        <button
+          class="btn back-btn"
+          onclick="window.location.href='collections.html'"
+          data-i18n="backToCollections"
+        >
+          Назад к коллекциям
+        </button>
+        <div class="media-gallery">
+          <img src="https://via.placeholder.com/600x400" alt="Контент" />
+        </div>
+      </section>
+    </main>
+    <script src="js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threeEffects.js"></script>
+    <script>
+      createRibbon();
+      createParticleField();
+    </script>
+  </body>
+</html>

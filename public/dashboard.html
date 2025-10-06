@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="dashboardTitle">Панель управления автора</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <div id="three-bg"></div>
+    <header>
+      <div class="top-header">
+        <div class="logo">
+          <a href="index.html">
+            <img src="assets/img/Logo.jpg" alt="Logo" />
+          </a>
+        </div>
+        <nav class="nav-links">
+          <a href="index.html" data-i18n="navHome">Главная</a>
+          <a href="about.html" data-i18n="navAbout">О нас</a>
+          <a href="collections.html" data-i18n="navCollections">Коллекции</a>
+        </nav>
+        <div class="social-buttons">
+          <a href="https://twitter.com" target="_blank">
+            <img src="assets/img/twitter-logo.png" alt="Twitter" /> Twitter
+          </a>
+          <a href="https://t.me" target="_blank">
+            <img src="assets/img/telegram-logo.png" alt="Telegram" /> Telegram
+          </a>
+          <a href="https://pump.fun" target="_blank">
+            <img src="assets/img/pump-logo.png" alt="Pump.fun" /> Pump.fun
+          </a>
+        </div>
+                <!-- Переключатель языка -->
+        <div class="language-switcher">
+          <button id="languageBtn" class="btn">
+            <img src="assets/img/lang.png" alt="Language" class="language-icon" />
+            <span id="currentLang">RU</span>
+          </button>
+          <ul id="languageDropdown" class="dropdown">
+            <li data-lang="ru">RU</li>
+            <li data-lang="en">EN</li>
+          </ul>
+        </div>
+        <div class="auth">
+          <a href="login.html" class="btn" data-i18n="authLogin"
+            >Войти / Зарегистрироваться</a
+          >
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="dashboard">
+        <div class="section-header">
+          <h2 data-i18n="dashboardHeader">Панель управления</h2>
+          <div class="header-line"></div>
+        </div>
+        <div class="upload-section">
+          <h3 data-i18n="addCollection">Добавить новую коллекцию</h3>
+          <form id="uploadForm" enctype="multipart/form-data">
+            <div class="file-inputs">
+              <!-- Drag & drop для превью -->
+              <div class="drag-drop-area" id="previewDragDropArea">
+                <p data-i18n="dropPreview">
+                  Перетащите превью изображения сюда или кликните для выбора
+                </p>
+                <input type="file" id="previewUpload" accept="image/*" hidden />
+                <div id="previewPreview"></div>
+              </div>
+              <!-- Drag & drop для файлов коллекции -->
+              <div class="drag-drop-area" id="collectionDragDropArea">
+                <p data-i18n="dropCollection">
+                  Перетащите фото/видео коллекции сюда или кликните для выбора
+                </p>
+                <input
+                  type="file"
+                  id="collectionUpload"
+                  accept="image/*,video/*"
+                  multiple
+                  hidden
+                />
+                <div id="collectionPreview"></div>
+              </div>
+            </div>
+            <div class="form-fields">
+              <label for="collectionTitle" data-i18n="collectionTitleLabel"
+                >Название коллекции</label
+              >
+              <input
+                type="text"
+                id="collectionTitle"
+                placeholder="Введите название..."
+                required
+              />
+              <label for="collectionDescription" data-i18n="collectionDescLabel"
+                >Описание</label
+              >
+              <textarea
+                id="collectionDescription"
+                placeholder="Введите описание..."
+                required
+              ></textarea>
+              <label for="collectionPrice" data-i18n="collectionPriceLabel"
+                >Цена в SOL</label
+              >
+              <input
+                type="number"
+                id="collectionPrice"
+                step="0.01"
+                placeholder="Введите цену..."
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-submit" data-i18n="uploadBtn">
+              Загрузить
+            </button>
+          </form>
+        </div>
+        <div class="uploaded-collections">
+          <h3 data-i18n="uploadedCollections">Загруженные коллекции</h3>
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="tablePreview">Превью</th>
+                <th data-i18n="tableTitle">Название</th>
+                <th data-i18n="tableViews">Просмотры</th>
+                <th data-i18n="tableSales">Продажи (SOL)</th>
+                <th data-i18n="tableActions">Действия</th>
+              </tr>
+            </thead>
+            <tbody id="collectionsTable">
+              <!-- Динамически добавляемые коллекции -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/threeEffects.js"></script>
+    <script>
+      createRibbon();
+      createParticleField();
+    </script>
+    <script src="js/main.js"></script>
+    <script>
+      async function checkAuthorAccess() {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          window.location.href = "index.html"; // Если нет токена, отправляем на главную
+          return;
+        }
+    
+        try {
+          const response = await fetch("/api/check-author", {
+            method: "GET",
+            headers: { "Authorization": `Bearer ${token}` },
+          });
+    
+          const data = await response.json();
+          if (!data.success) {
+            alert("Доступ запрещен!"); // Можно заменить на UI-ошибку
+            window.location.href = "index.html";
+          }
+        } catch (error) {
+          console.error("Ошибка проверки доступа:", error);
+          window.location.href = "index.html";
+        }
+      }
+    
+      document.addEventListener("DOMContentLoaded", checkAuthorAccess);
+    </script>
+    
+  </body>
+</html>
